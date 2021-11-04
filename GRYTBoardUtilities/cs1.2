@@ -1,0 +1,28 @@
+var NoteBoards = new Dictionary<string, string>();
+            List<NoteTable> Notebooks = GetAllNotes();
+          
+            
+            for (int i = 0; i < Notebooks.Count; i++)
+            {
+                var Output = Notebooks[i];
+                JsonNote account = JsonConvert.DeserializeObject<JsonNote>(Ouput);
+                if (account.key == null)
+                {
+                    Guid newkey = Guid.NewGuid();
+                    NoteBoards.Add("key", newkey.ToString());
+                }
+                else
+                {
+                    NoteBoards.Add("key", account.key);
+                }
+                NoteBoards.Add("ncContentTypeAlias", account.ncContentTypeAlias);
+                NoteBoards.Add("title", account.Title);
+                NoteBoards.Add("content", account.Content);
+                NoteBoards.Add("className", account.ClassName);
+                NoteBoards.Add("creator", account.Creator);
+            }
+            Guid NodeK = GetBoardKey();
+            var BoardNode = contentService.GetById(NodeK);
+            var node = Umbraco.Content(NodeK);
+            BoardNode.SetValue("Notes", JsonConvert.SerializeObject(NoteBoards));
+            contentService.SaveAndPublish(BoardNode);
