@@ -1,0 +1,265 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.BoardUser>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using System;
+@{
+    Layout = "conferenceMaster.cshtml";
+    /* Board specific */
+    var BoardStatus = "None";
+    var Board = Model.Value<IPublishedContent>("bulletinBoardList");
+    int Pageid = Umbraco.AssignedContentItem.Id;
+    string Page = Pageid.ToString();
+    
+    /* Member specific */
+    var memberid = 0;
+    
+    var memberb = System.Web.Security.Membership.GetUser();
+    var loggedIn = 0;
+    if (memberb != null && Umbraco.MemberIsLoggedOn())
+    {
+        loggedIn = 1;
+        var currentMember = Services.MemberService.GetByUsername(Membership.GetUser().UserName);
+        memberid = currentMember.Id;
+
+    }
+    
+}
+@section Header
+{
+    @Html.Partial("Bulletin Board/NoteHeader")
+}
+    @Html.Partial("Bulletin Board/DeleteApi")
+    @Html.Partial("Bulletin Board/NoteCountApi")
+    @Html.Partial("Bulletin Board/NoteListApit")
+
+<div class="corkboard" style="margin-top:5px">
+    
+    <div <div class="wrapper wrapper-shadow">
+        <nav id="sidebar" style="position:relative;" >
+            <div class="headerbox">
+                <p class="welcomeheader">Welcome to #GVCC21 Connection Corner</p>
+               @Html.Partial("Bulletin Board/QuestionList")
+            </div>
+            
+            <div style="padding-bottom:10px">
+            <ul class="list-unstyled addbutton">
+                     <li>
+                     	<a id="addNote" data-toggle="modal" data-target="#form"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add a Note</a>
+                     </li>
+                  </ul>
+                  
+                 </div> 
+            <hr/>
+            <!-- Side bar Navigation -->
+            <ul class="menubuttons">
+            
+                
+                    @Html.Partial("Bulletin Board/NoteSideMenu")
+            </ul>
+          
+            <div class="instructionbox">
+                 <p>You must be logged in to add a note, it is text only no links.</p>
+                    
+                         <i class="fa fa-pencil"></i> Edit your note <br>
+                         <i class="fa fa-trash"></i>  Delete your notes 
+            
+                    
+            </p>
+            </div>
+                  
+        
+            
+        </nav>
+        <div id="content">
+             @Html.Partial("Bulletin Board/MobileBoardBanner")
+            <div class="container-fluid">
+                <button type="button" id="sidebarCollapse"  class="btn btn-info">
+                        <i style="color:#fff" class="fas fa-align-left"></i>
+                        <span></span>
+                </button>
+               
+                @{
+                    if (Board != null)
+                    {
+                        BoardStatus = "found";
+                        /* Searches foe Notes and more Board specific variables  */
+                        var Notes = Board.Value<IEnumerable<IPublishedElement>>("notes");
+                        var Moderators = Board.Value<IPublishedContent>("moderator");
+                        var name = Board.Value<string>("title");
+                        var BoardId = Board.Key.ToString();
+                        var ModId = 0;
+                        
+                        //Check for Moderator and setrs the Moderator
+                        if (Moderators == null)
+                        {
+                               ModId = 0;
+                        }
+                        else
+                        {
+                              ModId = Moderators.Id;
+                              if (@ModId == @memberid)
+                                {
+                                <button class="moderator-button" onclick="createNoteList('@BoardId','@name', 'listAfter')">Note List</button>        
+                                <button class="moderator-button" onclick="getNoteCount('@BoardId','@name', 0, 'countAfter')">Get Note Count</button>
+                                
+                                            
+                                        
+                                }
+                        }
+                        
+                        //Check for Notes
+                        if (Notes == null && Notes.Any())
+                        {
+                            <h3>No Notes Found</h3>
+                        }
+                        else
+                        {
+                                  
+                               @Html.Partial("Bulletin Board/AddNoteForm")
+                                
+                               
+                                
+                                
+                                   
+                          <ul class="note">
+                            @foreach (IPublishedElement item in Notes)
+                            {
+                                var title = item.Value<string>("title");
+                                var content = item.Value<string>("content");
+                                var NodeKey = item.Key.ToString();
+                                var classname = item.Value<string>("className");
+                                var creator = item.Value<IPublishedContent>("creator");
+                                var mid = creator.Id;
+                                var ribbontitle = " ";
+                               
+                                
+                                // Sets the ribbon titler 
+                                switch (classname)
+                                {
+                                     case "allcancers":
+                                       ribbontitle = "All Cancers";
+                                     break;
+                                     case "appendix":
+                                       ribbontitle = "Appendix Cancer";
+                                     break;
+                                     case "bladder":
+                                       ribbontitle = "Bladder Cancer";
+                                     break;
+                                     case "brain":
+                                       ribbontitle = "Brain Cancer";
+                                     break;
+                                     case "multiplemyeloma":
+                                       ribbontitle = "Multiple Myeloma";
+                                     break;
+                                     case "colon":
+                                       ribbontitle = "Colon Cancer";
+                                     break;
+                                     case "head-neck":
+                                       ribbontitle = "Head and Neck Cancers";
+                                
+                                     break;
+                                     case "breast":
+                                       ribbontitle = "Breast Cancer";
+                                     break;
+                                     case "leukemia":
+                                       ribbontitle = "Leukemia";
+                                     break;
+                                     case "caregiver":
+                                       ribbontitle = "Caregiver";
+                                     break;
+                                     case "kidney":
+                                       ribbontitle = "Kidney Cancer";
+                                     break;
+                                     case "childhood":
+                                       ribbontitle = "Childhood Cancer";
+                                     break;
+                                     case "cervical":
+                                       ribbontitle = "Cervical Cancer";
+                                     break;
+                                     case "liver":
+                                       ribbontitle = "Liver Cancer";
+                                     break;
+                                     case "hodgkins-lymphoma":
+                                       ribbontitle = "Hodgkins Lymphoma";
+                                     break;
+                                     case "ovarian":
+                                       ribbontitle = "Ovarian Cancers";
+                                     break;
+                                     case "pancreatic":
+                                       ribbontitle = "Pancreatic Cancer";
+                                     break;
+                                     case "prostrate":
+                                       ribbontitle = "Prostrate Cancer";
+                                     break;
+                                     case "testicular":
+                                       ribbontitle = "Testicular Cancer";
+                                     break;
+                                     case "stomach":
+                                       ribbontitle = "Stomach Cancer";
+                                     break;
+                                     case "uterine":
+                                       ribbontitle = "Uterine Cancer";
+                                     break;
+                                     case "sarcoma":
+                                       ribbontitle = "Sarcoma Cancer";
+                                     break;
+                                     case "skinr":
+                                       ribbontitle = "Skin Cancer";
+                                     break;
+                                     case "non-hodgkins-lymphoma":
+                                       ribbontitle = "Non Hodgkins Lymphoma";
+                                     break;
+                                     case "thyroid":
+                                       ribbontitle = "Thyroid Cancers";
+                                     break;
+                                     case "Lung":
+                                       ribbontitle = "Lung Cancer";
+                                     break;
+                                     case "carcinoid":
+                                       ribbontitle = "Carcinoid Cancer";
+                                     break;
+                                }
+                                    
+                                <li id="@NodeKey" class="@classname">
+                                <span id="ribbon-margin" class="text @classname"><i class="fa fa-ribbon" title="@ribbontitle"></i></span>
+                                    
+                                        @if((@memberid == @mid) && (@ModId != @memberid))
+                                        {
+                                         
+                                          <span class="button-shift"><button class="delete-border @classname" onclick="deleteNote('@NodeKey', '@BoardId', 'doAfter')"><i  class="fa fa-trash" title="Delete Note"></i></button>
+                                          <a href="/utility/?ut=edit&NodeKey=@NodeKey&BoardKey=@BoardId&Name=@name&PageId=@Page"><i class="fa fa-pencil" title="Edit Note"></i></a>
+                                         </span>
+                                        }
+                                        else if (@ModId == @memberid)
+                                        {
+                                           <span class="button-shift">
+                                           <button class="delete-border @classname" onclick="deleteNote('@NodeKey', '@BoardId', 'doAfter')"><i  class="fa fa-trash" title="Delete Note"></i></button>
+                                            </span>
+                                        }
+                                         
+                                        <p class="clearfloat text">@content</p>
+                                </li>
+                                }
+                            </ul>
+                    
+                            }
+                                        
+                        }
+                        
+                        else 
+                        {
+                            BoardStatus = "not found";
+                            <h3> Board Not Found</h3>
+                        }
+                }
+            
+            </div> <!-- Content -->
+        </div><!-- Container Fluid -->
+    </div> <!-- Wrapper -->
+</div> <!-- Corkboard -->
+     
+     
+         
+    
+     
+
+
