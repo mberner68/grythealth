@@ -1,0 +1,73 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<CoreLibrary.Models.NoteModel>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using System;
+@{
+    // Pulls Current Board - allows only current board to show up//
+    var Page = Umbraco.AssignedContentItem.Name;
+    var Children = Umbraco.AssignedContentItem.Value<IPublishedContent>("bulletinBoardList");
+    
+}
+<div class="modal-body">
+    <div class="form-group">
+
+            @using (Html.BeginUmbracoForm("CreateNote", "Note2Surface", System.Web.Mvc.FormMethod.Post, new {  enctype = "multipart/form-data", id = "note2Surface", autocomplete = "off" }))
+            {
+                
+                <p class="note-question">@Model.question1</p>
+                <input type="hidden" name="question1" id="question1" value="@Model.question1">
+               
+                @Html.Label("Note", "Note", new { @class = "note-label" })
+                <textarea name="Note" id="Note" cols="24" rows="8" class="note-textarea"> </textarea>
+                <p class="counter-shift">Total: <span id="display_count">0</span> of <span id="word_left">45</span> words</p>
+                @Html.Label("ClassName", "Note Color", new { @class = "note-label" })
+                <select id="ClassName" name="ClassName" class="note-dropdown">
+                    <option class="allcancers" value="allcancers">All Cancers</option>
+                    <option class="appendix" value="appendix">Appendix</option>
+                    <option class="bladder" value="bladder">Bladder</option>
+                    <option class="brain" value="brain">Brain</option>
+                    <option class="breast" value="breast">Breast Cancer</option>
+                    <option class="carcinoid" value="carcinoid">Carcinoid Cancer</option>
+                    <option class="caregiver" value="caregiver">Caregiver</option>
+                    <option class="cervical" value="cervical">Cervical Cancer</option>
+                    <option class="childhood" value="childhood">Childhood Cancer</option>
+                    <option class="colon" value="colon">Colon Cancer</option>
+                    <option class="head-neck" value="head-neck">Head and Neck Cancer</option>
+                    <option class="hodgkins-lymphoma" value="hodgkins-lymphoma">Hodgkins Lymphoma</option>
+                    <option class="kidney" value="kidney">Kidney Cancer</option>
+                    <option class="leukemia" value="leukemia">Leukemia</option>
+                    <option class="lung" value="lung">Lung Cancer</option>
+                    <option class="multiplemyeloma" value="multiplemyeloma">Multiple Myeloma</option>
+                    <option class="non-hodgkins-lymphoma" value="non-hodgkins-lymphoma">Non-Hodgkins Lymphoma</option>
+                    <option class="ovarian" value="ovarian">Ovarian Cancer</option>
+                    <option class="pancreatic" value="pancreatic">Pancreatic Cancer</option>
+                    <option class="prostrate" value="prostrate">Prostrate Cancer</option>
+                    <option class="sarcoma"value="sarcoma">Sarcoma/Bone Cancer</option>
+                    <option class="skin"  value="skin">Skin Cancer</option>
+                    <option class="stomach" value="stomach">Stomach Cancer</option>
+                    <option class="testicular" value="testicular">Testicular Cancer</option>
+                    <option class="thyroid" value="thyroid">Thyroid Cancer</option>
+                    <option class="uterine" value="uterine">Uterine Cancer</option>
+                </select>
+                
+                <input type="hidden" id="Board" name="Board"value="@Children.Name"/>
+                <input type="hidden" name="BoardKey" id="BoardKey" value="@Children.Key.ToString()" />
+                <div class="modal-footer border-top-0 d-flex justify-content-center">
+                    <button type="submit" class="note-submit">Save Your Note</button>
+                </div>
+
+
+            }
+
+        </div>
+   
+</div>
+
+
+<script src="/scripts/WordCount.js"></script>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+
