@@ -1,0 +1,64 @@
+@{
+    var changetest = "this string is for testing package updates of existing templates";
+    //var chatRooms = Model.Children().Where(x => x.ContentType.Alias == "conChat");
+    var DisabledColor =  "#E0E0E0";
+    var HoverColor = "#FFFFFF";
+    var ButtonColor = DisabledColor;
+    var loggedIn = false;
+    var memberb = System.Web.Security.Membership.GetUser();
+    
+    if (memberb != null && Umbraco.MemberIsLoggedOn())
+    {
+        ButtonColor = Model.Value<string>("linkHexColor");
+        HoverColor = "#be2bbb";
+        loggedIn = true;
+    }
+    
+}
+<style>
+    .chatnowloggedout {
+        color: white;
+        background-color: #ededed;
+    }
+    
+    .chatnowloggedout.btn:hover {
+        color:white!important;
+    }
+    .chatnowexhibitor{
+    background-color:@ButtonColor;
+    text-transform: none;
+    font-weight: 400;
+    font-size: 1rem;
+    font-size: .75rem;
+    position: relative;
+    border-radius: .25rem;
+    padding: .5rem 1rem;
+    border: 0px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    word-spacing: .25rem;
+    text-transform:uppercase;
+    
+}
+
+.chatnow:hover {
+    color:@HoverColor!important;
+   
+}
+
+
+
+</style>
+ 
+ @if(chatRooms != null && chatRooms.Any())
+ {
+    if(loggedIn == true)
+    {
+        var ChatPath = chatRooms.First().Url;
+        <a  style="text-align:center;" href="@ChatPath" class="chatnowexhibitor" target="_blank">Chat Now</a> 
+    }
+    if(loggedIn == false)
+    {
+        <a style="text-align:center;" href="#" onclick="return false;" class="btn chatnowloggedout" data-toggle="tooltip" title="Login required to access chatrooms.">Chat Now</a>
+    }
+}
