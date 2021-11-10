@@ -1,0 +1,60 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+ 
+<style>
+    .NavigationBox {
+        top: -15px;
+        position: relative;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        filter: drop-shadow(0 0 0.25rem #19191950);
+        border-bottom: 1px solid #c0c0c0;
+    }
+    
+    .LeftArrowStyle {padding-right: 5px; color:#000!important; }
+    .RightArrowStyle {padding-left: 5px;}
+    .VirtualExhibitHall {font-weight: bold; color:#000!important;}
+   
+    
+   
+
+    
+</style>
+@{
+   IPublishedContent parent = Umbraco.AssignedContentItem.Parent;
+   IEnumerable<IPublishedContent> children = parent.Children;
+   List<int> childrenIds = children.Select(x => x.Id).ToList();
+   int currentIndex = childrenIds.IndexOf(Umbraco.AssignedContentItem.Id);
+
+   IPublishedContent prev = null;
+   IPublishedContent next = null;
+
+   if (currentIndex > 0)
+   {
+       prev = children.ElementAt(currentIndex - 1);
+   }
+
+   if (currentIndex < (children.Count() - 1))
+   {
+       next = children.ElementAt(currentIndex + 1);
+   }
+}
+<div style="width:100%;">
+    <div class="col-sm-12 col-md-12 py-4 NavigationBox" style="text-align:center; background-color:#f6f6f6; padding: 0;">
+
+        <div class="row">
+            <div class="col-md-1">
+               @if (prev != null)
+                {
+                    <a class="prevnext prev LeftArrowStyle" title="@prev.Name" href="@prev.Url"><i class="fa fa-caret-left LeftArrowStyle"></i> Prev</a>
+                }
+            </div>
+            <div class="col-md-10 VirtualExhibitHall">Partner Showcase</div>
+           <div class="col-md-1">
+               @if (next != null)
+                {
+                    <a class="prevnext next RightArrowStyle" title="@next.Name" href="@next.Url">Next <i class="fa fa-caret-right RightArrowStyle"></i></a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
