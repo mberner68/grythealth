@@ -1,0 +1,61 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+<style>
+
+  .linknowexhibitor {
+    text-transform: none;
+    font-weight: 400;
+    width: 90%;
+    font-size: .875rem;
+    position: relative;
+    border-radius: .25rem;
+    padding: .5rem 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    word-spacing: .25rem;
+    text-transform: uppercase;
+    line-height: 20px;
+    transition: .5s ease-in-out;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: transparent!important;
+    border: solid thin #595454;
+    
+  }
+    
+    .linknowexhibitor:hover {
+    background-color: #E0E0E0!important;
+    
+    
+}
+
+
+    
+</style>
+
+@{
+    
+     var items = Model.Value<IEnumerable<IPublishedElement>>("menuItemSet");
+     var color = Model.Value<string>("highlightColorHex");
+     
+     if(items.Any())
+     {
+        <div class="col-12 p-4 d-flex justify-content-center align-items-center flex-column">
+        
+        @{
+                foreach(var item in items)
+                {
+                    var url = item.Value<string>("menuTargetUrl");
+                    var txt = item.Value<string>("menuDisplayText");
+                    
+                    <a class="linknowexhibitor" style="color:@color!important;" href="@url" target="_blank">
+                        @txt
+                    </a>
+                   
+                }
+        }
+       
+        </div>
+     }
+}
+
+
