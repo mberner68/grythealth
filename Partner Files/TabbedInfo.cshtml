@@ -1,0 +1,161 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ConExhibitor>
+    
+@{
+    
+     var BgColor = Model.Value<String>("tabsColorHex");
+     var FontColor =  Model.Value<string>("tabsColorHex");
+     var BorderHexColor =  Model.Value<string>("borderHexColor");
+     
+ }  
+<style>
+    /*TabbedInfo.cshml */
+    .tab-container {width:100%;}
+    .nav-tabs
+    {
+        width:100%;
+        
+    }
+    .nav-tabs > li {width:25%;}
+    
+    .nav-tabs > li a { 
+        background-color:#E5E5E5;
+        color:var(--medium-gray-color)!important;
+        margin-right:7px!important;
+        text-align:center;
+        display:block;
+        height:40px;
+        z-index: -1;
+        line-height:40px;
+        border-top: 1px solid #c0c0c0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        font-size:100%!important;
+    }
+    
+    
+    .nav-tabs > li > a.active ,
+   .nav-tabs > li > a.active :focus,
+    .nav-tabs > li > a.activr :hover{
+        background-color:var(--light-gray-color-2); /*#f6f6f6*/
+        color:var(--light-gray-color-2); /*#f6f6f6*/
+        border-bottom-color: var(--clear-color)!important; /*transparent*/
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        }
+    .tab-content { 
+        width:100%!important;
+        
+    }   
+        
+    .tab-pane {
+        border-top: 0!important; 
+        width:100%!important;
+        background-color:var(--light-gray-color-2); /*#f6f6f6*/
+        padding:15px!important;
+        height: 320px!important;
+        overflow: auto!important;
+        z-index: 1;
+        
+    }
+    .tab-pane p {
+        color: var(--medium-gray-color)!important;
+        
+    }
+    .tab-pane ol {
+        color: var(--medium-gray-color)!important;
+        
+    }
+    .tab-pane ul {
+        color: var(--medium-gray-color)!important;
+        
+    }
+    .padding-adjust {padding: 0px;}
+    @@media screen and (max-width: 540px)
+    {
+        .padding-adjust: {padding: 0px;}
+    
+    }
+  @@media screen and (min-width: 768px)
+    {
+       
+       .padding-adjust {padding: 0px 0px 0px 80px;}
+    }
+    
+    
+    
+    @@media screen and (max-width:1024px)
+    {
+      
+      .nav-tabs > li {width:50%;}
+      .nav-tabs > li a {border-top-left-radius: 0px; border-top-right-radius: 0px; margin-right: 2px!important;}
+      .nav-tabs > li > a.active,
+      .nav-tabs > li > a.active :focus,
+      .nav-tabs > li > a.active :hover{border-top-left-radius: 0px; border-top-right-radius: 0px; margin-right: 2px!important;}
+      
+    }
+    @@media screen and (max-width:800px)
+    {
+      
+      .nav-tabs > li {width:100%;}
+      .nav-tabs > li a {border-top-left-radius: 0px; border-top-right-radius: 0px; margin-right: 0px!important;}
+      .nav-tabs > li > a.active,
+      .nav-tabs > li > a.active :focus,
+      .nav-tabs > li > a.active :hover{border-top-left-radius: 0px; border-top-right-radius: 0px; margin-right: 0px!important;}
+      
+    }
+    
+    
+</style>
+
+@{
+    var doclist = Model.Children<ConDocument>().Where(x => x.ContentType.Alias == "conDocument");
+    var hasDocs = (doclist != null && doclist.Any());
+    
+    var vidlist = Model.Children<ConVideo>().Where(x => x.ContentType.Alias == "conVideo");
+    var hasVids = (vidlist != null && vidlist.Any());
+    
+    var linklist = Model.Value<IEnumerable<IPublishedElement>>("menuItemSet");
+    var hasLinks = (linklist != null && linklist.Any());
+}
+
+<div class = "tab-container">
+    
+    <div class="d-flex align-items-end rounded-top">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" >
+            <li><a class="active" href="#abouttab" data-toggle="tab">About</a></li>
+            @if(hasVids == true)
+            {
+               <li><a href="#videostab"  data-toggle="tab">Videos</a></li>
+            }
+            @if(hasDocs == true)
+            {
+                <li><a href="#doctab"  data-toggle="tab">Documents</a></li>
+            }
+             @if(hasLinks == true)
+            {
+                <li><a style="margin-right:0px!important;" href="#linkstab"  data-toggle="tab">External Links</a></li>
+            }
+        </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="abouttab">@Html.Raw(Model.ExhibitorDescription)</div>
+        <div class="tab-pane" id="videostab">@Html.Partial("~/Views/Partials/Conference/Exhibitors/Videos.cshtml")</div>
+        <div class="tab-pane" id="doctab">@Html.Partial("~/Views/Partials/Conference/Exhibitors/Documents.cshtml")</div>
+        <div class="tab-pane" id="linkstab">@Html.Partial("~/Views/Partials/Conference/Exhibitors/Links.cshtml")</div>
+    </div>
+
+</div>
+<script>
+    $('.nav-tabs a[href="#abouttab"]').show();
+    
+</script>
+
+
+
+
+
+
+
