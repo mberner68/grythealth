@@ -37,8 +37,7 @@
 
     
 </style>
-
-<div  class="banner-control pbanner" style="position:relative;height:400px; background-repeat: no-repeat; background-image: url('@(Model.Value<IPublishedContent>("mainImage")?.Url ?? "")')">
+<div class="banner-control pbanner" id="exhibitor-@Model.Id" style="position:relative; background-repeat: no-repeat; background-image: url('@(Model.Value<IPublishedContent>("mainImage")?.Url ?? "")')">
 
 </div>
 <div style="width:100%;margin-top:0;">
