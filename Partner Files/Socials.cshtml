@@ -1,0 +1,30 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+
+<div style="padding:0;" class="justify-content-center d-flex align-items-start tabs-social-icons mt-3 flex-wrap">
+@{
+                var items = Model.Value<IEnumerable<IPublishedElement>>("socialLinks");
+                var zzcolor =  Model.Value<string>("linkHexColor");
+                var zzborderColor =  Model.Value<string>("borderHexColor");
+                var color = Model.Value<string>("highlightColorHex");
+                var borderColor =  color + "80";
+              
+                    foreach(var item in items)
+                    {
+                       
+                        var url = item.Value<string>("urlText");
+                        var icon = item.Value<string>("socialIconClass");
+                       <div style="padding-top:.75rem">
+                        <a href="@url" style="width:30px;border: solid .125rem @borderColor;"  target="_blank">
+                            <i style="color:@color;" class="@icon "></i>
+                        </a>
+                        
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    }
+  }
+  </div>
