@@ -1,0 +1,42 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+    var useTitle = "Documents";
+    
+    var items = Model.Children<ComDocument>().Where(x => x.ContentType.Alias == "comDocument").OrderBy(x => x.SortOrder);
+       
+    if(items.Any())
+    {
+      <div class="mt-1 boothpart col-sm-12 p-sm-1 col-md-12 p-md-4 d-flex justify-content-center align-items-center flex-column">
+     
+            @{
+                
+               <div style="margin:0 auto; width:100%">
+                 <div style="margin:0 auto;">
+                  
+                @foreach(var item in items)
+                {
+                    var url = item.Value<string>("documentUrl");
+                    var txt = item.Value<string>("documentDisplayText");
+                    var icon = item.Value<string>("documentLinkClass");
+                    var useColor = Model.Value<String>("highlightColorHex");
+                   
+                    <div class="row booth-list-row py-1"  >
+                        <div class="col-2 text-center ">
+                            <a href="@url" target="_blank">
+                                 <i style="color:@useColor ;" class="@icon "></i>
+                            </a>
+                        </div>
+                        <div class="col-10 d-inline text-left ">
+                            <a class="booth-list-text" href="@url" target="_blank">
+                                @txt
+                            </a>
+                        </div>
+                    </div>
+                    
+                }
+                  </div>
+                </div>
+            }
+        </div>
+     }
+}
