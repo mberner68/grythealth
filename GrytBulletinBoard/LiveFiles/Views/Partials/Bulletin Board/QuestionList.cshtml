@@ -1,0 +1,17 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+ var Board = Model.Value<IPublishedContent>("bulletinBoardList");
+
+ if (Board != null)
+ {
+    var name = Board.Value<string>("title");
+    var question1 = Board.Value<string>("question1");
+     
+ <div class="question-box">
+                    <span class="question-color"><b>@question1</b></span>
+                </div>
+}
+
+
+}
+
