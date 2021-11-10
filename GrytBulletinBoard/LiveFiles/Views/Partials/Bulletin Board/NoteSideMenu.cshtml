@@ -1,0 +1,22 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@{
+	var selection = Umbraco.ContentAtRoot().FirstOrDefault()
+    .ChildrenOfType("boardList");
+    string Bkey = "";
+    
+    foreach (var item in selection)
+    {
+    	Bkey = item.Key.ToString();
+    }
+    var BoardList = Umbraco.Content(Guid.Parse(Bkey)).Children().Where(x => x.IsVisible());
+
+
+    foreach (var board in BoardList)
+    {
+        var Bname = board.Value<string>("title");
+        var Blink = board.Value<string>("boardLocation");
+        <li id="notemenulist"> <a href="@Blink">@Bname</a></li>
+    }
+
+}
+   
