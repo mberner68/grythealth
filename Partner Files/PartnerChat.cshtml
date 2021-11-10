@@ -1,0 +1,70 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+
+@{
+	var homePage = Model.AncestorOrSelf<ConHome>();
+	var settingsPage = homePage.Children.Where(x => x.ContentType.Alias == "conSettings").First();
+	 
+	var DefaultAvatar = "";
+	var member = Model.Value<IPublishedContent>("chatHost");
+	var hostonline = Model.Value<bool>("hostOnline");
+    var memberAvatar = "not set";
+    
+    
+	if (settingsPage != null)
+	{
+	    DefaultAvatar = settingsPage.GetProperty("defaultAvatar").Value().ToString();
+	}
+	
+	if(member != null)
+    {
+        /*memberAvatar = member.Name;*/
+        DefaultAvatar = member.GetProperty("avatar").Value<string>();
+    }
+    
+     var chatRooms = Model.Children().Where(x => x.ContentType.Alias == "conChat");
+    
+ 
+}
+
+<style>
+    .useravatar{
+        border-radius:50%;
+        width:96px;
+        height:96px;
+        margin:2rem auto 1rem auto;
+    }
+    .online {
+        font-size: .875rem;
+        border-radius: 8px;
+        font-weight:600;
+        width: 40%;
+        z-index: 1;
+        position: relative;
+        top: 55px;
+        left: 150px;
+        text-transform: uppercase;
+        color:#fff;
+        background-color:#5bc367;
+        border: 1px solid #5bc367;
+    }
+
+</style>
+
+@if(chatRooms != null && chatRooms.Any())
+{
+    if(hostonline == true)
+    {
+        <button class="online">online</button>
+    }
+
+    if(DefaultAvatar != "")
+    {
+        <img class="useravatar" src="@(DefaultAvatar)" alt="img">
+    }
+     if(DefaultAvatar == null || DefaultAvatar == "")
+    {
+        <!-- Change this to read settings/registration/defaultavatar -->
+        <img class="useravatar" src="https://s3.us-east-1.amazonaws.com/grytportal/conference/cae/media/30idk3rt/default_avatar.png" alt="img">
+    }
+}
+
