@@ -1,0 +1,101 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+ 
+<style>
+    .ExhibitorName {
+         font-weight: bold;
+    }
+    .exhibitorurl {
+        
+    }
+    
+    .exhibitoremail {
+        
+    }
+   
+    .contacticon{
+        
+    }
+    .icondiv{
+        position: relative;
+        padding-right:1rem;
+        text-align:right;
+        border: 1px solid #5bc367;
+    }
+     .iconlablediv{
+      
+        text-align:left;
+    }
+    
+    .SponsorshipLevel{
+        font-style: italic;
+    }
+    
+    .NosponsorshipLevel {
+        font-style: normal;
+        color:#000!important;
+    }
+ 
+    
+    
+</style>
+@{
+    var ExhibitorURL = Model.GetProperty("homelinkurl").Value().ToString();
+	var ContactEmail = Model.GetProperty("contactemail").Value().ToString();
+	var ContactUrl = Model.GetProperty("contactUrl").Value().ToString();
+	var SponsorshipLevel = Model.GetProperty("SponsorshipLevel").Value().ToString();
+	var ContactLinkColor =  Model.Value<string>("linkHexColor");
+}
+
+<div style="width:100%;margin-top:4px;">
+    <div class="row">
+       
+        <div class="col-sm-12 col-md-9 d-flex flex-column">
+            
+             <div style="text-align: left;" class="ExhibitorName">@Model.Name</div> 
+  
+  	            @if (SponsorshipLevel != null && SponsorshipLevel.Length > 0)
+	            {
+	                <div style="text-align: left; color:@ContactLinkColor;" class="SponsorshipLevel">@SponsorshipLevel 
+	                    <span class="NosponsorshipLevel">Virtual Exhibitor Booth</span>
+                    </div>
+	            }
+	             @if (SponsorshipLevel == null || SponsorshipLevel.Length == 0)
+	            {
+	                <div style="text-align: left;" class="NosponsorshipLevel">Virtual Partner Booth</div>
+	            }
+        </div>
+            
+    	<div class="col-sm-12 col-md-3 d-flex flex-column">
+    	    
+    	    <div class="row my-0 my-0">
+    	      
+	            @if (ContactEmail != null && ContactEmail.Length > 0)
+        	    {
+        	      <div class="col-10 iconlablediv">
+    	                <i style="color:@ContactLinkColor!important;" class="fas fa-envelope"></i>
+    	                <a style="color:black!important;" href="mailto:@ContactEmail">@ContactEmail</a>
+    	          </div>
+	            }
+	           
+	            @if (ContactUrl != null  && ContactUrl.Length > 0)
+        	    {
+        	        <div class="col-10 iconlablediv">
+    	                <i style="color:@ContactLinkColor!important;" class="fas fa-envelope"></i>
+    	                <a style="color:black!important;" href="@ContactUrl" target="_blank">Contact Us</a>
+    	            </div>
+	            }
+	            
+	            @if (ExhibitorURL != null  && ExhibitorURL.Length > 0)
+	            {
+	                <div class="col-10 iconlablediv">
+	                    <i style="color:@ContactLinkColor!important;" class="fas fa-globe"></i>
+	                    <a style="color:black!important;" target=_blank href="@ExhibitorURL">@ExhibitorURL</a>
+	                </div>
+	            }
+	            
+	        </div>
+	        
+    	</div>
+    	
+    </div>
+</div>
