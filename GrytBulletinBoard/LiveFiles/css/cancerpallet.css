@@ -1,0 +1,222 @@
+.corkboard {
+  background: url("https://s3.us-east-1.amazonaws.com/grytportal/media/devportal/l5hike4n/cork-board.jpg")
+    repeat;
+  background-size: auto;
+  padding: 0px;
+  margin-top: -75px;
+}
+
+.boardName {
+  background-color: white;
+  box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+  transition: transform 0.15s linear;
+  padding: 8px;
+  width: fit-content;
+}
+button {
+  position: relative;
+  text-decoration: none;
+  color: #fff;
+  background: transparent;
+  border: none;
+}
+/*Lung Cancer */
+.lung {
+  background-color: white !important;
+}
+/* All Cancers */
+.allcancers {
+  background-color: #e6e6fa !important;
+}
+/* Appendix */
+.appendix {
+  background-color: #ffbf00 !important;
+}
+/* Brain */
+.brain {
+  background-color: #808080 !important;
+}
+/* Head and Neck */
+.head-neck {
+  background-color: #800020;
+  border: 2px solid #fff;
+}
+/* Multiplemyeloma */
+.multiplemyeloma {
+  background-color: #800020 !important;
+}
+/* Breast */
+.breast {
+  background-color: #ffc0cb !important;
+}
+/* Care Giver */
+.caregiver {
+  background-color: #dda0dd !important;
+}
+/* Leukemia */
+.leukemia {
+  background-color: #ffa500 !important;
+}
+/* Colon */
+.colon {
+  background-color: #00008b !important;
+}
+/* Liver */
+.liver {
+  background-color: #50c878 !important;
+}
+/* Cervical */
+.cervical {
+  background-color: #009ca6 !important;
+  border: 2px solid #fff;
+}
+/* Childhood */
+.childhood {
+  background-color: #ffd700 !important;
+}
+/* Hodgkins Lymphoma */
+.hodgkins-lymphoma {
+  background-color: #8f00ff !important;
+}
+/* Kidney */
+.kidney {
+  background-color: #ffa500 !important;
+}
+/* Ovarian */
+.ovarian {
+  background-color: #009ca6 !important;
+}
+/* Pancreatic */
+.pancreatic {
+  background-color: #974f9b !important;
+}
+/* Prostrate */
+.prostrate {
+  background-color: #81c6e6 !important;
+}
+/* Non-Hodgkins Lymphoma */
+.non-hodgkins-lymphoma {
+  background-color: #b1d249 !important;
+}
+/* Testicular */
+.testicular {
+  background-color: #da70d6 !important;
+}
+/* Sarcome */
+.sarcoma {
+  background-color: #f8ec69 !important;
+}
+/* Stomach */
+.stomach {
+  background-color: #ccccff !important;
+}
+/* Uterine */
+.uterine {
+  background-color: #ffe5b4 !important;
+}
+/* Skin */
+.skin {
+  background-color: #000 !important;
+}
+/* Text Color  for cancers */
+.allcancers a,
+.allcancers,
+.brain a,
+.brain,
+.childhood a,
+.childhood,
+.lung a,
+.lung,
+.sarcoma a,
+.sarcoma,
+.stomach a,
+.stomach,
+.uterine a,
+.uterine {
+  color: black !important;
+}
+/* Removes Border from links */
+.cervical a,
+.head-neck a,
+.ovarian a,
+.bladder a,
+.thyroid a {
+  border: none !important;
+}
+
+/* Text color for other cancers */
+.appendix a,
+.appendix,
+.breast a,
+.breast,
+.caregiver a,
+.caregiver,
+.cervical a,
+.cervical,
+.colon a,
+.colon,
+.hodgkins-lymphoma a,
+.hodgkins-lymphoma,
+.kidney a,
+.kidney,
+.leukemia a,
+.leukemia,
+.liver a,
+.liver,
+.multiplemyeloma a,
+.multiplemyeloma,
+.non-hodgkins-lymphoma a,
+.non-hodgkins-lymphoma,
+.pancreatic a,
+.pancreatic,
+.prostrate a,
+.prostrate,
+.skin a,
+.skin,
+.testicular a,
+.testicular {
+  color: #fff !important;
+}
+
+/* Text color for cancers */
+.head-neck a,
+.head-neck,
+.ovarian,
+.ovarian a {
+  color: #fffff0;
+}
+/* Bladder */
+.bladder,
+.bladder a {
+  background-color: #800080;
+  color: #fbeb36;
+  border: 2px solid #0000ff;
+}
+/* Thyroid */
+.thyroid,
+.thyroid a {
+  background-color: #ffc0cb !important;
+  color: #0000ff !important;
+  border: 2px solid #009ca6;
+}
+/* Cancinoid */
+.carcinoid {
+  background: url("https://s3.us-east-1.amazonaws.com/grytportal/media/devportal/o1phc4am/zebra.png")
+    no-repeat;
+}
+.carcinoid button {
+  position: relative;
+  text-decoration: none;
+  color: #000;
+  background: #fff;
+  border: none;
+}
+.carcinoid .text {
+  background-color: #fff;
+  color: #000;
+}
+.carcinoid a {
+  background-color: #fff !important;
+  color: #000 !important;
+  border: none;
+}
