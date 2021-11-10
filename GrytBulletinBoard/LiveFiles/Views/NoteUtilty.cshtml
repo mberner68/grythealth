@@ -1,0 +1,101 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.NoteUtility>
+@using ContentModels = Umbraco.Web.PublishedModels;
+<style>
+    .hideNav { 
+        display:block; 
+        visibility:visible;
+        
+    }
+    .mobile-banner {
+        display:none; 
+        visibility:hidden;
+        
+    }
+    @@media screen and (max-width:800px)
+    {
+       .mobile-banner {
+           display:block; 
+           visibility:visible; 
+           width:100%; 
+           background-color:#fff; 
+           padding:1rem; 
+           margin-bottom:1.25rem; 
+           box-shadow: 2px 2px 10px #00000040;
+           }
+      .hideNav {
+           display:none; 
+           visibility:hidden;
+           }
+      .utilityheader-mob {
+            color:#000; 
+            font-weight:900; 
+            font-size:1.25rem;
+            text-align:center;
+                        
+        }
+    }
+    
+</style>
+@{
+	Layout = "conferenceMaster.cshtml";
+	var ut = Request.QueryString["ut"];
+	
+
+}
+@section Header
+{
+  @Html.Partial("Bulletin Board/NoteHeader")
+}
+
+<div class="corkboard" style="margin-top:-25px">
+    <div class="wrapper wrapper-shadow">
+        <nav id="sidebar" style="position:relative;" class="hideNav">
+            <div class="headerbox">
+                <p class="welcomeheader">Welcvome to #GVCC21 Connection Corner</p>
+            
+                <p class="utilityheader"><u>Note Utility Area</u></p>
+            </div>
+            <div class="instructionbox">
+                @switch (@ut)
+                        {
+                           case "edit" :
+                           <p><b>Edit(<i class="fa fa-pencil"></i>) your note.</b><br> You can edit your note's content and color.</p>
+                           break;
+                        }
+            </div>
+            
+            <div class="sidebar-footer footer-position">
+                <img width="250px" src="https://s3.us-east-1.amazonaws.com/gvcc2021/conference/4r5dzosy/artboard-1.png"/>
+            </div>
+        </nav>
+        <div id="content">
+            <div class = "mobile-banner">
+                <div class="headerbox">
+                <p class="welcomeheader">Welcvome to #GVCC21 Connection Corner</p>
+            
+                <p class="utilityheader-mob"><u>Note Utility Area</u></p>
+            </div>
+                
+             </div>   
+            <div class="container-fluid">
+                
+                    
+                <button type="button" id="sidebarCollapse" style="background-color:#5b2b5f" class="btn btn-info hideNav">
+                        <i style="color:#fff" class="fas fa-align-left"></i>
+                        <span></span>
+                </button>
+            <div class="row">
+                <div class="col-lg-12">
+                        @switch (@ut)
+                        {
+                           case "edit" :
+                           /* Edit form */
+                           @Html.Partial("Bulletin Board/NoteEditForm")
+                           break;
+                        }
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
