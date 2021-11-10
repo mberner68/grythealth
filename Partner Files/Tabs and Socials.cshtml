@@ -1,0 +1,44 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+<style>
+/*******SOCIAL TEST*******/
+.tabs-social-icons{
+    width:100%;
+  
+}
+.tabs-social-icons a{
+        color: #fff;
+    font-size: 1.5rem;
+    padding: .5rem;
+    border-radius: 50%;
+    border: solid .125rem rgba(255, 255, 255, 0.46);
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+        margin: 0 1rem;
+}
+
+.tabs-social-icons a {
+    min-width: 3rem;
+    height: 3rem;
+    margin: 0 .5rem;
+}
+</style>
+
+<div style="width:100%;padding:0;margin-top:30px;">
+    <div class="row">
+    <div  class="col-sm-12 p-sm-1 col-md-8 p-md-4  d-flex flex-row">
+        @Html.Partial("~/Views/Partials/Partners/TabbedInfo.cshtml")
+    </div>
+    
+    <div class="padding-adjust col-sm-12 col-md-4 justify-content-center d-flex flex-row"> 
+        <div style="padding:0;" class="d-flex flex-column"> 
+     
+            @Html.Partial("~/Views/Partials/Partners/Socials.cshtml")
+        </div>
+    </div>
+             
+    
+    </div>
+</div>
