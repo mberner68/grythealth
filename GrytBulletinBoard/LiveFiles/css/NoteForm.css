@@ -1,0 +1,67 @@
+
+
+.note-label {
+        width: 100%;
+        font-weight: 500;
+        font-size: 1rem;
+        margin-top: 8px;
+        margin-left: 12px;
+        margin-bottom: -6px;
+        color: #595454 !important;
+    }
+
+    .loginbox-note {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        margin-top: 50px;
+        margin-bottom: 100px;
+        border: solid 1px #595454 !important;
+        filter: drop-shadow(0 0 0.25rem #00000080) !important;
+        background: #ffffff;
+    
+    }
+    .note-textbox {
+        margin-left: 12px;
+        height: 40px;
+        margin-top: 5px;
+        color: #595454 !important;
+        width:95%
+        
+        
+    }
+    .note-dropdown {margin-left:12px; width:95%}
+    .note-submit {
+        border-radius: .25rem;
+        position: relative;
+        padding: .5rem 1rem;
+        letter-spacing: 1px;
+        word-spacing: .25rem;
+        text-transform: none !important;
+        display: inline-block;
+        font-weight: 400 !important;
+        font-size: 1rem !important;
+        margin-left: 0;
+        margin-right: 0.675rem;
+        background-color: #5b2b5f !important;
+        color: #ffffff !important;
+        border: 1px solid var(--GRYT-Purple) !important;
+        float: right;
+        width:250px;
+       
+    }
+    .note-question {
+        font-size:1.25rem; 
+        text-align:center;
+        color:#000;
+        
+    }
+    .note-textarea {margin-left:12px; width:95%}
+    .note-submit:hover{
+        color: #fff !important;
+        background-color: #982d6b !important;
+    }
+    .counter-shift {margin-left:12px; color:#000}
+    #note2Surface {width:100%;}
+
+        
+        
