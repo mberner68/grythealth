@@ -1,0 +1,50 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+
+@using Clean.Core.Helpers
+
+@{
+    var articleList = Umbraco.AssignedContentItem;
+    var isArticleListPage = Model.Id == articleList.Id;
+    var fallbackPageSize = isArticleListPage ? 10 : 3;
+
+    var pageSize = QueryStringHelper.GetIntFromQueryString(Request, "size", fallbackPageSize);
+    var pageNumber = QueryStringHelper.GetIntFromQueryString(Request, "page", 1);
+    var allArticles = articleList.Children<ConExhibitor>().OrderByDescending(x => x.SortOrder).Reverse();
+    var pageOfArticles = allArticles.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+    var totalItemCount = allArticles.Count();
+    var pageCount = totalItemCount > 0 ? Math.Ceiling((double)totalItemCount / pageSize) : 1;
+
+}
+
+    <div class="row">
+ <div class="col-12 p-4 d-flex justify-content-center align-items-center flex-column">
+
+<div class="container" >
+
+         <div class="click-here" style="text-align: center;">
+            @foreach (var artList in allArticles)
+            {
+                var linkAct = artList.Value<string>("linkAction");
+                var homeLink = artList.Value<string>("homeLinkUrl");
+                switch(linkAct)
+                {
+                    case "Open Booth":
+                        <a rel="noopener" href="@artList.Url">@artList.Name<br></a>
+                        break;
+                    case "Home URL":
+                        <a rel="noopener" href="@homeLink" target="_blank">@artList.Name<br></a>
+                        break;
+                    case "None":
+                        <a rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                    default:
+                        <a rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                }
+              
+            }
+         </div>
+    </div>
+</div>
+</div>
+
