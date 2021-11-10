@@ -1,0 +1,148 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+<script>
+$(function(){
+  $('a').each(function() {
+    if ($(this).prop('href') == window.location.href) {
+      $(this).addClass('current');
+    }
+  });
+});
+</script>
+
+@{
+var selections = Umbraco.ContentAtRoot().FirstOrDefault()
+    .ChildrenOfType("mainBoardUser")
+    .Where(x => x.IsVisible());
+    }
+<style>
+    .mobile-banner {
+        display:none; 
+        visibility:hidden;
+    }
+    
+    .desktop { 
+        visibility:visible; 
+        display:block
+        
+    }
+    .mobile { 
+        visibility:hidden; 
+        display:none
+        
+    }
+    
+    
+    
+    @@media screen and (max-width:600px)
+    {
+        .mobile-banner {
+           display:block; 
+           visibility:visible; 
+           background-color:#fff; 
+           width:100%; 
+           padding:1rem; 
+           margin-bottom:1.25rem; 
+           box-shadow: 2px 2px 10px #00000040;
+           
+           }
+        #sidebarCollapse {
+            display:none; 
+            visibility:hidden;
+            }
+        #content{
+            padding:0px
+            }
+        .mobile-banner ul {
+            list-style-type:none
+            }
+        .mobile-banner ul li a {
+                    padding: 10px;
+                    font-size: 1.1em;
+                    display: block;
+                    color:#000!important;
+                }
+                
+       .mobile-banner ul li a:hover {
+                    background:  var(--GRYT-Purple)!important;
+                    color: #fff!important;
+                }
+                
+        .mobile-banner ul li.active>a,
+                {
+                    color: #fff!important;
+                    background: var(--GRYT-Purple)!important;
+                }
+                
+         .mobile-banner ul li a.current 
+                {
+                color: #fff!important;
+                background: var(--GRYT-Purple)!important;
+                }
+        
+        .mobile { 
+            visibility:visible; 
+            display:block
+            }
+        .desktop { 
+            visibility:hidden; 
+            display:none
+          }
+        
+        #addNote a{
+             
+            position: relative;
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+        }
+        
+        #addNote { 
+            background-color: #fff; 
+            color: #5b2b5f!important; 
+            font-weight: 600;
+            }
+        
+        #addNote:hover{
+            color: #fff!important; 
+            border: 1px solid var(--GRYT-Purple)!important;
+            }
+}
+        
+</style>
+
+<div class="mobile-banner">
+    
+  <div class="headerbox">
+                <p class="welcomeheader">Welcome to #GVCC21 Connection Corner</p>
+            </div>
+            @Html.Partial("Bulletin Board/QuestionList")
+            <ul class="list-unstyled components" style="border-bottom: none;">
+                <li><a id="addNote" data-toggle="modal" data-target="#form">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> Add a Note</a></li>
+                </ul>
+   
+      <hr />
+     <ul class="list-unstyled components">
+                @foreach (var items in selections)
+                {
+                        <li>
+                			<a href="@items.Url">@items.Name</a>
+                		</li>
+                }  
+                
+                    @Html.Partial("Bulletin Board/NoteSideMenu")
+            </ul>
+       <div class="instructionbox desktop">
+                 <p>You must be logged in to add a note, it is text only no links.</p>
+                    
+                         <i class="fa fa-pencil"></i> Edit your note <br>
+                         <i class="fa fa-trash"></i>  Delete your notes 
+            
+                    
+            </p>
+            </div>
+       
+
+</div>
+            
