@@ -1,0 +1,140 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@inherits UmbracoViewPage
+@using Clean.Core.Helpers
+<!-- Moved to ConMain.css - 6/8/21 -->
+<style>
+    .exhibitortext {
+        margin-bottom: 12px;
+        font-weight: 600;
+        font-size: 1rem;
+        color:#595454!important;
+    }
+</style>
+@{
+
+    var col1Exhibitors = new List<ComPartner>();
+    var col2Exhibitors = new List<ComPartner>();
+    var col3Exhibitors = new List<ComPartner>();
+    
+    var exhibitorList = Umbraco.AssignedContentItem;
+  
+    var allExhibitors = exhibitorList.Children<ComPartner>().OrderByDescending(x => x.SortOrder).Reverse();
+    var totalItemCount = allExhibitors.Count();
+    
+    
+    if(totalItemCount <3)
+    {
+        if(totalItemCount < 2)
+        {
+            col1Exhibitors =  allExhibitors.Skip(0).Take(1).ToList();
+        }
+        else
+        {
+            col1Exhibitors =  allExhibitors.Skip(0).Take(1).ToList();
+            col2Exhibitors =  allExhibitors.Skip(1).Take(1).ToList();
+        }
+    }
+    else
+    {
+        var ItemsPerRow = (int)Math.Floor((double)totalItemCount /3);
+        var extras = totalItemCount - (ItemsPerRow*3);
+        
+        col1Exhibitors = allExhibitors.Skip(0).Take(ItemsPerRow + extras).ToList();
+        col2Exhibitors = allExhibitors.Skip(ItemsPerRow + extras).Take(ItemsPerRow).ToList();
+        col3Exhibitors = allExhibitors.Skip(((ItemsPerRow) * 2)+ extras).ToList();
+    }
+   
+ 
+
+}
+
+<div class="row" style="width:100%">
+    <div class="col-12 p-4 d-flex justify-content-center align-items-center flex-column">
+    <div class="row">
+        
+        <div class="col-4 col-sm-12">
+            <div class="click-here" style="text-align: center;">
+            @foreach (var artList in col1Exhibitors)
+            {
+                var linkAct = artList.Value<string>("linkAction");
+                var homeLink = artList.Value<string>("homeLinkUrl");
+                
+                <div class="exhibitortext">
+                @switch(linkAct)
+                {
+                    case "Open Booth":
+                        <a class="click-here" rel="noopener" href="@artList.Url">@artList.Name<br></a>
+                        break;
+                    case "Home URL":
+                        <a class="click-here" rel="noopener" href="@homeLink" target="_blank">@artList.Name<br></a>
+                        break;
+                    case "None":
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                    default:
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                }
+                </div>
+            }
+            </div>
+        </div>
+        
+         <div class="col-4 centercol col-sm-12">
+            <div class="click-here" style="text-align: center;">
+            @foreach (var artList in col2Exhibitors)
+            {
+                var linkAct = artList.Value<string>("linkAction");
+                var homeLink = artList.Value<string>("homeLinkUrl");
+                <div class="exhibitortext">
+                @switch(linkAct)
+                {
+                    case "Open Booth":
+                        <a class="click-here" rel="noopener" href="@artList.Url">@artList.Name<br></a>
+                        break;
+                    case "Home URL":
+                        <a class="click-here" rel="noopener" href="@homeLink" target="_blank">@artList.Name<br></a>
+                        break;
+                    case "None":
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                    default:
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                }
+                </div>
+            }
+            </div>
+        </div>
+        
+         <div class="col-4 col-sm-12">
+            <div class="click-here" style="text-align: center;">
+            @foreach (var artList in col3Exhibitors)
+            {
+                var linkAct = artList.Value<string>("linkAction");
+                var homeLink = artList.Value<string>("homeLinkUrl");
+                <div class="exhibitortext">
+                @switch(linkAct)
+                {
+                    case "Open Booth":
+                        <a class="click-here" rel="noopener" href="@artList.Url">@artList.Name<br></a>
+                        break;
+                    case "Home URL":
+                        <a class="click-here" rel="noopener" href="@homeLink" target="_blank">@artList.Name<br></a>
+                        break;
+                    case "None":
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                    default:
+                        <a class="click-here" rel="noopener" href="#">@artList.Name<br></a>
+                        break;
+                }
+                </div>
+            }
+            </div>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
