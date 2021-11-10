@@ -1,0 +1,241 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<CoreLibrary.Models.NoteModel>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@using Umbraco.Core.Services
+@using System;
+@{
+
+   
+    var Note = Model.Note;
+    var Classname = Model.ClassName;
+    var Board = Model.Board;
+
+}
+
+
+<div class="modal-body">
+    <div class="form-group">       
+        <div class="loginbox-note col-sm-12 col-md-10 offset-md-1 px-md-3 col-lg-6 offset-lg-3 px-lg-10">
+            <div>
+                <ul class="note">
+                    
+                    <li class="@Classname">      
+                        <p class="text">@Note</p>
+                    </li>
+                </ul>
+            </div>
+            <hr />
+            <h3 style="text-align:center">Edit Note</h3>
+            @using (Html.BeginUmbracoForm("EditNote", "Note2Surface", System.Web.Mvc.FormMethod.Post, new { enctype = "multipart/form-data", id = "note2Surface", autocomplete = "off" }))
+            {
+                
+                @Html.Label("Note", "Note", new { @class = "note-label" })
+                <textarea name="Note" id="Note" cols="20" rows="5" class="note-textarea">@Note</textarea>
+                <br />
+                <p class="counter-shift">Total: <span id="display_count">0</span> of <span id="word_left">45</span> words</p>
+                @Html.Label("ClassName", "Note Color", new { @class = "note-label" })
+                <select id="ClassName" name="ClassName" class="note-dropdown">
+                    @if (@Classname == "allcancers")
+                    {
+                        <option class="allcancers" value="allcancers" selected>All Cancers</option> }
+                    else
+                    {
+                        <option class="allcancers" value="allcancers">All Cancers</option>
+                    }
+                    @if (@Classname == "appendix")
+                    {
+                        <option class="appendix" value="appendix" selected>Appendix</option> }
+                    else
+                    {
+                        <option class="appendix" value="appendix">Appendix</option>
+                    }
+                    @if (@Classname == "bladder")
+                    {
+                        <option class="bladder" value="bladder" selected>Bladder Cancer</option> }
+                    else
+                    {
+                        <option class="bladder" value="bladder">Bladder Cancer</option>
+                    }
+                    @if (@Classname == "brain")
+                    {
+                        <option class="brain" value="brain" selected>Brain Cancer</option> }
+                    else
+                    {
+                        <option class="brain" value="brain">Brain Cancer</option>
+                    }
+                    @if (@Classname == "breast")
+                    {
+                        <option class="breast" value="breast" selected>Breast Cancer</option> }
+                    else
+                    {
+                        <option class="breast" value="breast">Breast Cancer</option>
+                    }
+                    @if (@Classname == "carcinoid")
+                    {
+                        <option class="carcinoid" value="carcinoid" selected>Carcinoid Cancer</option> }
+                    else
+                    {
+                        <option class="carcinoid" value="carcinoid">Carcinoid Cancer</option>
+                    }
+                    @if (@Classname == "caregiver")
+                    {
+                        <option class="caregiver" value="caregiver" selected>Caregiver</option> }
+                    else
+                    {
+                        <option class="caregiver" value="caregiver">Caregiver</option>
+                    }
+                    @if (@Classname == "cervical")
+                    {
+                        <option class="cervical" value="cervical" selected>Cervical Cancer</option> }
+                    else
+                    {
+                        <option class="cervical" value="cervical">Cervical Cancer</option>
+                    }
+                    @if (@Classname == "childhood")
+                    {
+                        <option class="childhood" value="childhood" selected>Childhood Cancer</option> }
+                    else
+                    {
+                        <option class="childhood" value="childhood">Childhood Cancer</option>
+                    }
+                    @if (@Classname == "colon")
+                    {
+                        <option class="colon" value="colon" selected>Colon Cancer</option> }
+                    else
+                    {
+                        <option class="colon" value="colon">Colon Cancer</option>
+                    }
+
+                    @if (@Classname == "head-neck")
+                    {
+                        <option class="head-neck" value="head-neck" selected>Head and Neck Cancer</option> }
+                    else
+                    {
+                        <option class="head-neck" value="head-neck">Head and Neck Cancer</option>
+                    }
+                    @if (@Classname == "hodgkins-lymphoma")
+                    {
+                        <option class="hodgkins-lymphoma" value="hodgkins-lymphoma" selected>Hodgkins Lymphoma</option> }
+                    else
+                    {
+                        <option class="hodgkins-lymphoma" value="hodgkins-lymphoma">Hodgkins Lymphoma</option>
+                    }
+                    @if (@Classname == "kidney")
+                    {
+                        <option class="kidney" value="kidney" selected>Kidney Cancer</option> }
+                    else
+                    {
+                        <option class="kidney" value="kidney">Kidney Cancer</option>
+                    }
+                    @if (@Classname == "leukemia")
+                    {
+                        <option class="leukemia" value="leukemia" selected>Leukemia</option> }
+                    else
+                    {
+                        <option class="leukemia" value="leukemia">Leukemia</option>
+                    }
+                    @if (@Classname == "lung")
+                    {
+                        <option class="lung" value="lung" selected>Lung Cancer</option> }
+                    else
+                    {
+                        <option class="lung" value="lung">Lung Cancer</option>
+                    }
+                    @if (@Classname == "multiplemyeloma")
+                    {
+                        <option class="multiplemyeloma" value="multiplemyeloma" selected>Multiple Myeloma</option> }
+                    else
+                    {
+                        <option class="multiplemyeloma" value="multiplemyeloma">Multiple Myeloma</option>
+                    }
+                    @if (@Classname == "non-hodgkins-lymphoma")
+                    {
+                        <option class="non-hodgkins-lymphoma" value="non-hodgkins-lymphoma" selected>Non-Hodgkins Lymphoma</option> }
+                    else
+                    {
+                        <option class="non-hodgkins-lymphoma" value="non-hodgkins-lymphoma">Non-Hodgkins Lymphoma</option>
+                    }
+                    @if (@Classname == "ovarian")
+                    {
+                        <option class="ovarian" value="ovarian" selected>Ovarian Cancer</option> }
+                    else
+                    {
+                        <option class="ovarian" value="ovarian">Ovarian Cancer</option>
+                    }
+                    @if (@Classname == "pancreatic")
+                    {
+                        <option class="pancreatic" value="pancreatic" selected>Pancreatic Cancer</option> }
+                    else
+                    {
+                        <option class="pancreatic" value="pancreatic">Pancreatic Cancer</option>
+                    }
+                    @if (@Classname == "prostrate")
+                    {
+                        <option class="prostrate" value="prostrate" selected>Prostrate Cancer</option> }
+                    else
+                    {
+                        <option class="prostrate" value="prostrate">Prostrate Cancer</option>
+                    }
+                    @if (@Classname == "sarcoma")
+                    {
+                        <option class="sarcoma" value="sarcoma" selected>Sarcoma/Bone Cancer</option> }
+                    else
+                    {
+                        <option class="sarcoma" value="sarcoma">Sarcoma/Bone Cancer</option>
+                    }
+                    @if (@Classname == "skin")
+                    {
+                        <option class="skin" value="skin" selected>Skin Cancer</option> }
+                    else
+                    {
+                        <option class="skin" value="skin">Skin Cancer</option>
+                    }
+                    @if (@Classname == "stomach")
+                    {
+                        <option class="stomach" value="stomach" selected>Stomach Cancer</option> }
+                    else
+                    {
+                        <option class="stomach" value="stomach">Stomach Cancer</option>
+                    }
+                    @if (@Classname == "testicular")
+                    {
+                        <option value="testicular" selected>Testicular Cancer</option> }
+                    else
+                    {
+                        <option class="testicular" value="testicular">Testicular Cancer</option>
+                    }
+                    @if (@Classname == "thyroid")
+                    {
+                        <option class="thyroid" value="thyroid" selected>Thyroid Cancer</option> }
+                    else
+                    {
+                        <option class="thyroid" value="thyroid">Thyroid Cancer</option>
+                    }
+                    @if (@Classname == "uterine")
+                    {
+                        <option class="uterine" value="uterine" selected>Uterine Cancer</option> }
+                    else
+                    {
+                        <option class="uterine" value="uterine">Uterine Cancer</option>
+                    }
+                </select>
+
+
+
+                <div class="modal-footer border-top-0 d-flex justify-content-center">
+                    <button type="submit" class="note-submit">Save Edits</button>
+                </div>
+
+
+            }
+
+        </div>
+    </div>
+</div>
+    
+<script src="/scripts/WordCount.js"></script>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
