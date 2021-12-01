@@ -9,6 +9,8 @@
     var Note = Model.Note;
     var Classname = Model.ClassName;
     var Board = Model.Board;
+    var Market = Model.Marketing;
+    var Creator = Model.Creator;
 
 }
 
@@ -33,6 +35,19 @@
                 <textarea name="Note" id="Note" cols="20" rows="5" class="note-textarea">@Note</textarea>
                 <br />
                 <p class="counter-shift">Total: <span id="display_count">0</span> of <span id="word_left">45</span> words</p>
+                <label class="note-label">Check here if you're okay with your comment potentially appearing anonymously in GVCC/GRYT Health marketing materials</label>
+                 if (Model.Marketing == "Yes")
+                 {
+                      <input class="note-checkbox" id="Marketing1" name="Marketing1" type="checkbox" value="true" checked/><span>Yes</span>
+                      <input name="Marketing1" type="hidden" value="false" /><br /> 
+                 
+                 }
+                 else
+                 {
+                     <input class="note-checkbox"  id="Marketing1" name="Marketing1" type="checkbox" value="false" checked/><span>No</span>
+                    <input name="Marketing1" type="hidden" value="true" /><br />   
+                 }
+                
                 @Html.Label("ClassName", "Note Color", new { @class = "note-label" })
                 <select id="ClassName" name="ClassName" class="note-dropdown">
                     @if (@Classname == "allcancers")
@@ -220,7 +235,7 @@
                     }
                 </select>
 
-
+                  <input type="hidden" name="Creator" value="@Creator"/>
 
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
                     <button type="submit" class="note-submit">Save Edits</button>
