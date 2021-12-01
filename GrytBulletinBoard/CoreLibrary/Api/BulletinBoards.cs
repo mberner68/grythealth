@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 
 namespace GrytCore.Controllers
 {
+   
+
     public class DeleteRequest
     {
         public string NodeKey { get; set; }
@@ -24,14 +26,14 @@ namespace GrytCore.Controllers
         public string BoardName { get; set; }
         public int Total { get; set; }
     }
-   
+
 
     public class GrytBoardApiController : UmbracoApiController
     {
         private readonly IContentNoteService contentNoteService;
         private readonly IContentTypeBaseServiceProvider _contentTypeBaseServiceProvider;
 
-        public GrytBoardApiController(IContentNoteService contentNoteService,  IContentTypeBaseServiceProvider contentTypeBaseServiceProvider)
+        public GrytBoardApiController(IContentNoteService contentNoteService, IContentTypeBaseServiceProvider contentTypeBaseServiceProvider)
         {
             this.contentNoteService = contentNoteService;
 
@@ -42,7 +44,7 @@ namespace GrytCore.Controllers
         {
             throw new NotImplementedException();
         }
-
+       
         //umbraco/api/GrytBoardApi/DeleteNote
         [System.Web.Http.HttpPost]
         public string DeleteNote([System.Web.Http.FromBody] DeleteRequest data)
