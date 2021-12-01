@@ -1,0 +1,457 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ComPartnerDashboard>
+@using Umbraco.Web.Models
+@using Clean.Core.ViewModels
+@using Clean.Core.Helpers
+@using System.Linq
+<script src="/scripts/com-tag-filters.js"></script>
+@{
+	Layout = "master.cshtml";
+	
+    //search
+    var searchQuery = Request.QueryString["q"] ?? "";
+    if (searchQuery == "")
+    {
+       searchQuery = "Partner";
+    }
+    var searchQueryTags = searchQuery.Split(' ');
+    var searchQueryResults = new List<PublishedSearchResult>();
+    var tagFilteredResults = new List<PublishedSearchResult>();
+    
+    long resultCount = 0;
+    
+    //tag lists
+    var tagList = new List<TagModel>();
+    var mediaTags = new List<string>();
+    var diseaseTags = new List<string>();
+    var generalTags = new List<string>();
+    var TagClass = "";
+    //tag filters
+    var tagTypesQuery = Request.QueryString["tagTypes"] ?? "";
+    var tagTypes = tagTypesQuery.Split(',');
+    var currentAlias = "";
+
+    if (!string.IsNullOrWhiteSpace(searchQuery))
+    {
+        searchQueryResults = Umbraco.ContentQuery.Search(searchQuery, string.Empty).Distinct()
+                .Where(x => x.Content.IsDocumentType("ComPartner")
+                ||  x.Content.IsDocumentType("ComDocument")||  x.Content.IsDocumentType("ComVideo"))
+                .ToList();
+
+        foreach (var result in searchQueryResults)
+        {
+            //set tags to current page tag set
+            var tags = Umbraco.TagQuery.GetTagsForEntity(result.Content.Id);
+            
+            // if it has no tags can't match (Strict)
+            if(! tags.Any())
+            {
+                // tagFilteredResults.Add(result);
+                // tagList.AddRange(tags);
+                continue;
+            }
+            
+            // filtering on search box text
+            if(string.IsNullOrEmpty(tagTypesQuery))
+            {
+                // find exact tag match
+                if(tags.Select(x => x.Text.ToUpper()).Contains(searchQuery.ToUpper()))
+                {
+                    tagFilteredResults.Add(result);
+                    tagList.AddRange(tags);
+                    continue;
+                }
+            }
+          
+            // filtering using checked-boxes
+            if(! string.IsNullOrEmpty(tagTypesQuery))
+            {
+                if(tags.Select(x => x.Text).ToList().Intersect(tagTypes).Any())
+                {
+                    tagFilteredResults.Add(result);
+                     tagList.AddRange(tags);
+                     continue;
+                }
+            }
+            
+           
+        }
+
+        resultCount = tagFilteredResults.Count();
+        
+        diseaseTags = tagList
+                            .Where(x => x.Group == "diseaseTypeTags")
+                            .Select(x => x.Text)
+                            .Distinct()
+                            .OrderBy(t => t)
+                            .ToList();
+        generalTags = tagList
+                            .Where(x => x.Group == "generalTypeTags")
+                            .Select(x => x.Text)
+                            .Distinct()
+                            .OrderBy(t => t)
+                            .ToList();
+        mediaTags = tagList
+                            .Where(x => x.Group == "mediaTypeTags")
+                            .Select(x => x.Text)
+                            .Distinct()
+                            .OrderBy(t => t)
+                            .ToList();
+        }          
+        
+        
+        
+     
+     var allButtonsTemp = Model.Value<IEnumerable<IPublishedElement>>("searchButtons");
+     IEnumerable<ConferenceMenuLink> allButtons = new List<ConferenceMenuLink>();
+    
+     if(allButtonsTemp != null)
+     {
+        allButtons = allButtonsTemp.Select(c => new ConferenceMenuLink(c));
+     }
+     
+    }
+ 
+<style>
+    
+    
+    .post-title {color: #595454!important;}
+     .filterTags a{color: #595454!important;}
+    .resource-banner {color:#595454}
+
+        .logo-background-s{
+        border-radius:14px; 
+        position:relative; 
+        top:50%;
+        left:50%;
+        transform: translate(-50%, -50%); 
+        width:250px; 
+        height:250px; 
+         z-index:1010;
+         background-color:#ffffff;
+        border:1px solid #888888;
+         box-shadow: 1px 2px #888888;
+    }
+    .logo-image-s{
+        position:absolute; 
+        left: 50%;
+        top: 60%;
+        transform: translate(-50%, -50%); 
+        max-width:130px;
+        max-height:130px;
+        border:0 !important;
+    }
+    .dash-img{
+        width:150px;
+        border:1px solid #888888 !important;
+        box-shadow: 1px 2px #888888 !important;
+    }
+    
+    .tagsearchbox{
+        border-radius:10rem!important;
+        height:2.1rem!important;
+        width:80%;
+        padding-left:1rem;
+    }
+    .tagsearchbox:focus, input:focus{
+        outline: none;
+        border:1px solid #dddddd!important;
+        background-color:#fff!important;
+    }
+    .tagsearchicon{
+        border:none;
+        height:2rem!important;
+        margin-left:-4rem!important;
+        padding:0 1rem;
+         background-color:transparent!important;
+        color:#888888;
+    }
+    .searchbackground{
+        margin:-.25rem 0 3rem 0;
+        width:100%;
+        padding:1.75rem 0 2.5rem 0;
+        background-color:#fff!important;
+        border-bottom:1px solid #dddddd;
+    }
+    .searchbutton{
+        border-radius:10rem!important;
+        height:1rem!important;
+        padding:.2rem .5rem!important;
+        font-size:.75rem;
+        margin-right:.75rem;
+        border:1px solid #FDA97D!important;
+        color:#595454!important;
+        background-color:#FDA97D!important;
+    }
+    .searchbuttonlist{
+         margin-top:1.25rem!important;
+    }
+    .fa-caret-down{
+        margin-right:.75rem;
+    }
+    .resource-banner  p{
+        font-size: 1.1875rem!important;
+    }  
+    .post-title-banner {
+        text-align: left;
+        padding: 6px;
+        background-color: #cacaca;
+        border: 1px solid #cacaca;
+        border-radius: 14px 14px 0px 0px;
+       
+    }
+    
+
+    @@media screen and (max-width:414px)
+    {
+       .searchbutton{font-size:1rem;}
+    }
+    @@media screen and (max-width:360px)
+    {
+      .searchbutton{font-size:.92rem;}
+    }
+    @@media screen and (max-width:320px)
+    {
+       .searchbutton{font-size:.8rem;}
+    }
+    @@media screen and (max-width:280px)
+    {
+      .searchbutton{font-size:1rem;}
+    }
+    
+    
+    
+</style>
+@Html.Partial("Partners/PartnerDashboardBanner")
+  <form action="@Model.Url" method="GET" id="search"> 
+    <div class="row pb-0">
+       
+            <div  class="searchbackground col-12 ">
+                 <div class="container mt-3">
+                <div class="row ">
+                    
+                <div class="ml-2 col-sm-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2">
+                   <!-- <div class="resource-banner"><p>Looking for specific resources? Using the search bar below, you can look for content on our Partners based on topic.</p></div>
+               -->
+                    <input type="text" class="tagsearchbox" placeholder="Search for cancer types or organizations..." name="q" value="@searchQuery" />
+                    <button class="tagsearchicon " tag-filter="tagTypes"  id="submit" name="submit" type="submit" value="Submit"><i class="fa fa-search"></i></button>
+                </div>
+                
+        
+                
+                
+                </div>
+                </div>
+            </div>
+    </div>
+        
+   <div class="container mt-0">
+      <div class="row pb-5">          
+                <div class="col-lg-3">
+                    <div class="searchbuttonlist">
+                        @Html.Partial("Partners/PartnerResourceFilters")
+                    </div>
+                   @* @if (generalTags.Any())
+                    {@Html.Partial("~/Views/Partials/TagListGeneralPartner.cshtml", generalTags)}
+                    @if (mediaTags.Any())
+                    {@Html.Partial("~/Views/Partials/TagListMedia.cshtml", mediaTags)}*@
+                    @if (diseaseTags.Any())
+                    {@Html.Partial("~/Views/Partials/TagList.cshtml", diseaseTags)}
+                </div>
+                
+                <div class="col-lg-9 col-md-10 mx-auto" id="results">
+                @if (!string.IsNullOrWhiteSpace(searchQuery))
+                {
+                  
+                        
+                       @* if(tagFilteredResults.Where(x => x.Content.IsDocumentType("ComPartner")).Any())
+                        {
+                             <div class="row mt-4 mb-2">
+                                <div class="col-lg-12">
+                                    <h3>Partners</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                        }*@
+                        <div class="row mb-3">
+                        @foreach (var result in tagFilteredResults.Where(x => x.Content.IsDocumentType("ComPartner")))
+                        {
+                            currentAlias = result.Content.ContentType.Alias;
+                            var usePic = (result.Content.Value("ExhibitorLogo") == null) ? "" : result.Content.Value<IPublishedContent>("ExhibitorLogo").Url;
+                            var linkAction = result.Content.Value<string>("LinkAction");
+                            var linkTarget = "#";
+                            if(linkAction == "Home URL"){linkTarget = result.Content.Value<string>("homeLinkUrl");}
+                            if(linkAction == "Open Booth"){linkTarget = result.Content.Url;}
+                          
+                             
+                         
+                            
+                             <div class="col-lg-4 d-flex justify-content-center">
+                                 @if (!string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                    <div style="width:100%;margin-top:0;">
+                                        <div  class="logo-background-s mb-2" >
+                                            <div class="post-preview post-title-banner">
+                                                
+                                                    <a target="_blank" href="@linkTarget">
+                                                        <h2 class="post-title">
+                                                            @(result.Content.Value("title"))   
+                                                        </h2>
+                                                    </a>
+                                                 
+                                                </div>
+                                            <a target="_blank" href="@result.Content.Url">
+                                                <img  class="logo-image-s" src="@usePic">
+                                            </a>
+                                        
+                                         @string.Join(", ", result.generalTypeTag) 
+                                    
+                                        </div>
+                                        
+                                           
+                                    </div>
+                                 }
+                                   @if (string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                    <div style="margin-top:0;">
+                                        <div  class="logo-background-s mb-2" >
+                                            <a target="_blank" href="@result.Content.Url">
+                                                <i style="color:#88888840;" class="logo-image-s fas fa-chalkboard-teacher fa-6x"></i>
+                                            </a>
+                                        
+                                        </div>
+                                         <div class="post-preview" style="margin-top:2.5rem; text-align:center">
+                                                <a target="_blank" href="@linkTarget">
+                                                    <h2 class="post-title">
+                                                        @(result.Content.Value("title"))   
+                                                    </h2>
+                                                </a>
+                                             
+                                            </div>
+                                    </div>
+                                 }
+                            </div> 
+                            
+                        
+                        }
+                        </div>
+                        @*
+                        
+                        if(tagFilteredResults.Where(x => x.Content.IsDocumentType("ComVideo")).Any())
+                        {
+                             <div class="row mt-4 mb-2">
+                                <div class="col-lg-12">
+                                    <h3>Videos</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                        }
+                        <div class="row mb-3">
+                        @foreach (var result in tagFilteredResults.Where(x => x.Content.IsDocumentType("ComVideo")))
+                        {
+                            currentAlias = result.Content.ContentType.Alias;
+                            var usePic = (result.Content.Value("videoImage") == null) ? "" : result.Content.Value<IPublishedContent>("videoImage").GetCropUrl("square");
+                            
+                            var linkAction = result.Content.Value<string>("videoDisplayText");
+                            
+                             
+                             <div class="col-lg-4  d-flex justify-content-center">
+                                 @if (!string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                     <a href="@result.Content.Value("videoUrl")" target="_blank">
+                                        <img class="img-fluid img-sq dash-img" src="@usePic"/>
+                                    </a>
+                                    <div class="post-preview" style="margin-top:3.5rem; text-align:center">
+                                     <a href="@result.Content.Value("videoUrl")" target="_blank">
+                                        <h2 class="post-title">
+                                            @linkAction  
+                                        </h2>
+                                    </a>
+                                </div>
+                                 }
+                                 @if (string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                    <div style="width:100%;margin-top:0;">
+                                        <div  class="logo-background-s mb-2" >
+                                             <a href="@result.Content.Value("videoUrl")" target="_blank">
+                                                 <i style="color:#88888840;" class="logo-image-s fas fa-video fa-6x"></i>
+                                            </a>
+                                        </div>
+                                        <div class="post-preview" style="margin-top:3.5rem; text-align:center">
+                                     <a href="@result.Content.Value("videoUrl")" target="_blank">
+                                        <h2 class="post-title">
+                                            @linkAction  
+                                        </h2>
+                                    </a>
+                                </div>
+                                    </div>
+                                 }
+                            </div> 
+                              
+                        }
+                       </div> 
+                         if(tagFilteredResults.Where(x => x.Content.IsDocumentType("ComnDocument")).Any())
+                        {
+                             <div class="row mt-4 mb-2">
+                                <div class="col-lg-12">
+                                    <h3>Documents</h3>
+                                    <hr>
+                                </div>
+                            </div>
+                        }
+                        foreach (var result in tagFilteredResults.Where(x => x.Content.IsDocumentType("ComDocument")))
+                        {
+                            currentAlias = result.Content.ContentType.Alias;
+                            var usePic = (result.Content.Value("documentImage") == null) ? "" : result.Content.Value<IPublishedContent>("documentImage").GetCropUrl("square");
+                            
+                            var linkAction = result.Content.Value<string>("documentDisplayText");
+                            
+                             <div class="row mb-3">
+                             <div class="col-lg-3  d-flex justify-content-center">
+                                 @if (!string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                    <a href="@result.Content.Value("documentUrl")" target="_blank">
+                                        <img class="img-fluid img-sq dash-img" src="@usePic"/>
+                                    </a>
+                                 }
+                                 @if (string.IsNullOrWhiteSpace(usePic))
+                                 {
+                                    <div style="width:100%;margin-top:0;">
+                                        <div  class="logo-background-s mb-2" >
+                                            <a href="@result.Content.Value("documentUrl")" target="_blank">
+                                                 <i style="color:#88888840;" class="logo-image-s fas fa-file-pdf fa-6x"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                 }
+                            </div> 
+                              <div class="col-lg-9 p-3">
+                                <div class="post-preview">
+                                    <a href="@result.Content.Value("documentUrl")" target="_blank">
+                                        <h2 class="post-title">
+                                            @linkAction 
+                                        </h2>
+                                    </a>
+                                </div>
+                              </div>
+                              </div>
+                        }*@
+                        
+                        
+                         
+                        
+                        
+                        
+                        
+                        
+                       
+                }
+                        
+                        
+                        
+            </div>
+              </div>
+            </div>
+     </div>
+</form>
+
+
