@@ -26,27 +26,20 @@ namespace CoreLibrary.Controllers
             this.mediaUploadService = mediaUploadService;
             _contentTypeBaseServiceProvider = contentTypeBaseServiceProvider;
         }
-        public string GetPageStringProperty(string PropertyName, string defaultVal)
-        {
-            
-            var page = CurrentPage;
-            if (page == null) { return "xxx"; }
-            string result = (string)page.GetProperty(PropertyName).GetValue();
-            if (result == null || result == "") { return defaultVal; }
-            return result;
-        }
+        
 
         public ActionResult AddNote()
         {
+            var page = CurrentPage;
             NoteModel UseModel = new NoteModel();
-            UseModel.question1 = GetPageStringProperty("question1","How are you feeling");
-            //  return PartialView("/Views/NoteSurface/_NoteForm.cshtml", UseModel);
-                return PartialView("Bulletin Board/NotePopUpForm", UseModel);
+            UseModel.question1 = contentNoteService.GetPageStringProperty("question1", "How are you feeling",page);
+            //return PartialView("/Views/NoteSurface/_NoteForm.cshtml", UseModel);
+              return PartialView("Bulletin Board/NotePopUpForm", UseModel);
+            //return PartialView("Bulletin Board/NotePopUpUdated", UseModel);
         }
 
         public ActionResult EditYourNote(string NodeKey, string BoardKey, string name, string PageId)
         {
-
             NoteModel EditNote = new NoteModel();
 
             EditNote = NoteTools.SetUpModel.EditData(NodeKey, BoardKey, name, PageId);
@@ -57,18 +50,33 @@ namespace CoreLibrary.Controllers
         [HttpPost]
         public ActionResult CreateNote(NoteModel notes)
         {
-            notes.Creator = contentNoteService.GetUser();
-            bool createnote = contentNoteService.CreateNewNoteItem("notes", notes);
-            ModelState.Clear();
-            return CurrentUmbracoPage();
+           
+            if (notes.Creator == null)
+            {
+                return Redirect("/login/");
+            }
+            else
+            {
+                notes.Creator = contentNoteService.GetUser();
+                bool createnote = contentNoteService.CreateNewNoteItem("notes", notes);
+                ModelState.Clear();
+                return CurrentUmbracoPage();
+            }
         }
         
         [HttpPost]
         public ActionResult EditNote(NoteModel notes)
         {
-            var Page = notes.PageId;
-            bool complete = contentNoteService.EditNoteItem("notes", notes);
-            return RedirectToUmbracoPage(Page);
+            if (notes.Creator == null)
+            {
+                return Redirect("/login/");
+            }
+            else
+            {
+                var Page = notes.PageId;
+                bool complete = contentNoteService.EditNoteItem("notes", notes);
+                return RedirectToUmbracoPage(Page);
+            }
         }
         
         
