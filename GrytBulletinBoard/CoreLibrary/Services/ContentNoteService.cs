@@ -32,6 +32,7 @@ namespace CoreLibrary.Services
             var NewKey = CreateNewKey();
             string Key = Model.BoardKey;
             IContent Parent = GetParent(Key);
+            Model = MarketingCheckbox(Model);
 
             var notesJSON = Parent.GetValue<string>(PropertyAlias);
             if (notesJSON != null)
@@ -48,6 +49,7 @@ namespace CoreLibrary.Services
                         {"content", Model.Note},
                         {"className", Model.ClassName },
                         {"question1", Model.question1 },
+                        {"Marketing", Model.Marketing },
                         {"creator", Model.Creator },
                         {"key", NewKey.ToString()}
                 });
@@ -69,6 +71,7 @@ namespace CoreLibrary.Services
         }
         public bool EditNoteItem(string PropertyAlias, NoteModel Model)
         {
+            Model = MarketingCheckbox(Model);
             string Key = Model.BoardKey;
             var Notebooks = new List<Dictionary<string, string>>();
             Guid NewKey = CreateNewKey();
@@ -78,12 +81,13 @@ namespace CoreLibrary.Services
 
             for (int idx = 0; idx < noteValz.Count(); idx++)
             {
-
+                
                 if (Guid.Parse(noteValz[idx]["key"].ToString()) == Model.NodeKey)
                 {
                     //noteValz[idx]["title"] = Model.Title;
                     noteValz[idx]["content"] = Model.Note;
                     noteValz[idx]["className"] = Model.ClassName;
+                    noteValz[idx]["Marketing"] = Model.Marketing;
                 }
                 Notebooks.Add(noteValz[idx]);
             }
@@ -134,6 +138,30 @@ namespace CoreLibrary.Services
             return NoteId;
 
         }
+        public NoteModel MarketingCheckbox (NoteModel Model)
+        {
+            if (Model.Marketing1 == true)
+            {
+                Model.Marketing = "Yes";
+                return Model;
+            }
+            else
+            {
+                Model.Marketing = "No";
+                return Model;
+            }
+
+
+        }
+        public string GetPageStringProperty(string PropertyName, string defaultVal, Umbraco.Core.Models.PublishedContent.IPublishedContent page)
+        {
+
+
+            if (page == null) { return "xxx"; }
+            string result = (string)page.GetProperty(PropertyName).GetValue();
+            if (result == null || result == "") { return defaultVal; }
+            return result;
+        }
         public NoteModel GetNoteItem(string PropertyAlias, NoteModel Model)
         {
             IContent Parent = GetParent(Model.BoardKey);
@@ -149,6 +177,9 @@ namespace CoreLibrary.Services
                     //Model.Title = noteValz[idx]["title"];
                     Model.Note = noteValz[idx]["content"];
                     Model.ClassName = noteValz[idx]["className"];
+                    Model.Marketing = noteValz[idx]["Marketing"];
+                    Model.Creator = noteValz[idx]["creator"];
+
                 }
             }
             return Model;

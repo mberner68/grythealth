@@ -13,6 +13,8 @@ namespace CoreLibrary.Services
         bool EditNoteItem (string PropertyAlias, NoteModel Model);
         string GetUser();
         string DeleteNoteItem(DeleteRequest data, string PropertyAlias);
+        NoteModel MarketingCheckbox(NoteModel Model);
+        string GetPageStringProperty(string PropertyName, string defaultVal, Umbraco.Core.Models.PublishedContent.IPublishedContent page);
         NoteModel GetNoteItem(string PropertyAlias, NoteModel Model);
     }
 
