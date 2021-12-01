@@ -1,22 +1,44 @@
 @inherits Umbraco.Web.Mvc.UmbracoViewPage
 @{
-	var selection = Umbraco.ContentAtRoot().FirstOrDefault()
-    .ChildrenOfType("boardList");
-    string Bkey = "";
+	var Board = Model.Value<IPublishedContent>("bulletinBoardList");
+	var parent = Umbraco.ContentAtRoot().FirstOrDefault().Children().Where(x => (x.Name == "About"));
+	var parent2 = Umbraco.ContentAtRoot().FirstOrDefault().Children().Where(x => (x.Name == "Profile"));
+	string pkey = "";
+    string pkey2 = "";
     
-    foreach (var item in selection)
-    {
-    	Bkey = item.Key.ToString();
-    }
-    var BoardList = Umbraco.Content(Guid.Parse(Bkey)).Children().Where(x => x.IsVisible());
+	foreach (var item in parent)
+	{
+		pkey = item.Key.ToString();
+	}
+     foreach (var item2 in parent2)
+	{
+		pkey2 = item2.Key.ToString();
+	}
 
-
-    foreach (var board in BoardList)
-    {
-        var Bname = board.Value<string>("title");
-        var Blink = board.Value<string>("boardLocation");
-        <li id="notemenulist"> <a href="@Blink">@Bname</a></li>
-    }
-
+var boardList = Umbraco.Content(Guid.Parse(pkey)).ChildrenOfType("boardUser");
+var boardList2 = Umbraco.Content(Guid.Parse(pkey2)).ChildrenOfType("boardUser");
 }
-   
+
+    @{
+        foreach (var Board2 in boardList2)
+        {
+           var name = Board.Value<string>("title");
+            
+            <li id="notemenulist">
+                <a href="@Board2.Url">@name</a>
+            </li>
+          
+        
+        }
+        foreach (var Boards in boardList)
+        {
+            <li id="notemenulist">
+    			<a href="@Boards.Url">@Boards.Name</a>
+    		</li>
+        
+        }
+    
+    
+    }
+
+
