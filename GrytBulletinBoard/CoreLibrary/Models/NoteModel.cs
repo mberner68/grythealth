@@ -18,6 +18,8 @@ namespace CoreLibrary.Models
         public string question1 {get; set;}
       //  public string Avatar { get; set; }
       //  public HttpPostedFileBase File { get; set; }
+        public bool Marketing1 { get; set; }
+        public string Marketing { get; set; }
         public NoteModel() { }
         
     }
