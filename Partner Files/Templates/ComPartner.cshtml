@@ -1,0 +1,54 @@
+@inherits Umbraco.Web.Mvc.UmbracoViewPage<ComPartner>
+@using ContentModels = Umbraco.Web.PublishedModels;
+@{
+	Layout = "master.cshtml";
+}
+
+@using Clean.Core.ViewModels
+@using Clean.Core.Extensions
+@section Header
+{
+<style>
+.booth-menu {
+    font-size:.75rel;
+    color:#be2bbb !important;
+}
+.booth-list-title{
+    font-size:.75rel;
+    text-align:center;
+    color:Black;
+    background-color: #00000020;
+    border-bottom:1px solid #0000f120;
+}
+.booth-list-text{
+    color:black !important;
+     font-size:.65rel;
+     overflow:wrap;
+}
+.booth-list-row{
+    border-top:1px solid #00000020;
+    
+}
+</style>
+}
+
+<div class="col-sm-12 col-md-8 offset-md-2 pb-0 d-flex justify-content-center align-items-center flex-column">
+@Html.Partial("~/Views/Partials/Partners/PartnerNavigation.cshtml")
+</div>
+
+
+<div class="col-sm-12 p-sm-1 col-md-8 offset-md-2 p-md-4 pb-0 d-flex justify-content-center align-items-center flex-column">
+@Html.Partial("~/Views/Partials/Partners/PartnerContact.cshtml")
+</div>
+
+<div class="col-sm-12 p-sm-1 col-md-8 offset-md-2 p-md-4 mt-1d-flex justify-content-center align-items-center flex-column">
+@Html.Partial("~/Views/Partials/Partners/booth banner.cshtml")
+</div>
+
+<div class="col-sm-12 p-sm-1 col-md-8 offset-md-2 p-md-4 mt-1 d-flex justify-content-center align-items-center flex-column">
+@Html.Partial("~/Views/Partials/Partners/Tabs and Socials.cshtml")
+</div>
+
+<div class="my-4 col-sm-12 p-sm-1 col-md-8 offset-md-2 p-md-4 d-flex justify-content-center align-items-center flex-column">
+    @Html.Raw(Model.ExhibitorFooter)
+</div>
