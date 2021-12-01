@@ -5,7 +5,18 @@
     // Pulls Current Board - allows only current board to show up//
     var Page = Umbraco.AssignedContentItem.Name;
     var Children = Umbraco.AssignedContentItem.Value<IPublishedContent>("bulletinBoardList");
+    /* Member specific */
+    var memberid = 0;
     
+    var memberb = System.Web.Security.Membership.GetUser();
+    var loggedIn = 0;
+    if (memberb != null && Umbraco.MemberIsLoggedOn())
+    {
+        loggedIn = 1;
+        var currentMember = Services.MemberService.GetByUsername(Membership.GetUser().UserName);
+        memberid = currentMember.Id;
+
+    }
 }
 <div class="modal-body">
     <div class="form-group">
@@ -19,6 +30,11 @@
                 @Html.Label("Note", "Note", new { @class = "note-label" })
                 <textarea name="Note" id="Note" cols="24" rows="8" class="note-textarea"> </textarea>
                 <p class="counter-shift">Total: <span id="display_count">0</span> of <span id="word_left">45</span> words</p>
+                <label class = "note-label">Check here if you're okay with your comment potentially appearing anonymously in GVCC/GRYT Health marketing materials</label>
+                <input class=".note-checkbox" id="Marketing1" name="Marketing1" type="checkbox" value="true" />
+                <input name="Marketing1" type="hidden" value="false" /><br />   
+           
+                
                 @Html.Label("ClassName", "Note Color", new { @class = "note-label" })
                 <select id="ClassName" name="ClassName" class="note-dropdown">
                     <option class="allcancers" value="allcancers">All Cancers</option>
@@ -48,7 +64,7 @@
                     <option class="thyroid" value="thyroid">Thyroid Cancer</option>
                     <option class="uterine" value="uterine">Uterine Cancer</option>
                 </select>
-                
+                <input type="hidden" id="Creator" name="Creator" value="@memberid"/>
                 <input type="hidden" id="Board" name="Board"value="@Children.Name"/>
                 <input type="hidden" name="BoardKey" id="BoardKey" value="@Children.Key.ToString()" />
                 <div class="modal-footer border-top-0 d-flex justify-content-center">
