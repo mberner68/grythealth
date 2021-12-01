@@ -2,9 +2,11 @@
 @using Umbraco.Web.Models
 @using Clean.Core.ViewModels
 @using Clean.Core.Helpers
-
+@using System.Linq
+<script src="/scripts/com-tag-filters.js"></script>
 @{
 	Layout = "master.cshtml";
+	
     //search
     var searchQuery = Request.QueryString["q"] ?? "";
     var searchQueryTags = searchQuery.Split(' ');
@@ -94,7 +96,7 @@
         
         
         
-        
+     
      var allButtonsTemp = Model.Value<IEnumerable<IPublishedElement>>("searchButtons");
      IEnumerable<ConferenceMenuLink> allButtons = new List<ConferenceMenuLink>();
     
@@ -188,7 +190,7 @@
 }
 .community-support {color:#fff!important; background:#9bd1f4!important; border:1px solid #9bd1f4!important;}
 .financial {color:#000!important; background:#71d6af!important; border:1px solid #71d6af!important;}
-.aya {color:#000!important; background:#ffdc67!important; border:1px solid #ffdc67!important;}
+.AYA {color:#000!important; background:#fad766!important; border:1px solid #fad766!important;}
 .medical{color:#fff!important; background:#e7a81e!important; border:1px solid #e7a81e!important;}
 .family-building{color:#fff!important; background:#e614ad!important; border:1px solid #e614ad!important;}
 
@@ -212,7 +214,7 @@
     
     
 </style>
-  <form action="/about/partner-dashboard/" method="GET" id="search"> 
+  <form action="@Model.Url" method="GET" id="search"> 
     <div class="row pb-0">
        
             <div  class="searchbackground col-12 ">
@@ -240,7 +242,7 @@
                                TagClass = "financial";
                                break;
                                case "AYA":
-                               TagClass = "aya";
+                               TagClass = "AYA";
                                break;
                                case "Medical":
                                TagClass = "medical";
@@ -260,7 +262,7 @@
                 </div>
             </div>
     </div>
-            
+        
    <div class="container mt-0">
       <div class="row pb-5">          
                 <div class="col-lg-3">
@@ -269,7 +271,7 @@
                     @if (mediaTags.Any())
                     {@Html.Partial("~/Views/Partials/TagListMedia.cshtml", mediaTags)}
                     @if (generalTags.Any())
-                    {@Html.Partial("~/Views/Partials/TagListGeneral.cshtml", generalTags)}
+                    {@Html.Partial("~/Views/Partials/TagListGeneralPartner.cshtml", generalTags)}
                 </div>
                 
                 <div class="col-lg-9 col-md-10 mx-auto" id="results">
@@ -286,16 +288,19 @@
                                 </div>
                             </div>
                         }
+                        
                         foreach (var result in tagFilteredResults.Where(x => x.Content.IsDocumentType("ComPartner")))
                         {
-                            currentAlias = result.Content.ContentType.Alias;
+                              currentAlias = result.Content.ContentType.Alias;
                             var usePic = (result.Content.Value("ExhibitorLogo") == null) ? "" : result.Content.Value<IPublishedContent>("ExhibitorLogo").Url;
                             var linkAction = result.Content.Value<string>("LinkAction");
                             var linkTarget = "#";
                             if(linkAction == "Home URL"){linkTarget = result.Content.Value<string>("homeLinkUrl");}
                             if(linkAction == "Open Booth"){linkTarget = result.Content.Url;}
-                             
-                            <div class="row mb-3">
+                            
+                             <div class="row mb-3">
+                         
+                            
                              <div class="col-lg-3 d-flex justify-content-center">
                                  @if (!string.IsNullOrWhiteSpace(usePic))
                                  {
@@ -304,30 +309,34 @@
                                             <a target="_blank" href="@result.Content.Url">
                                                 <img  class="logo-image-s" src="@usePic">
                                             </a>
-                                     
                                         </div>
+                                    
+                                       
                                     </div>
                                  }
                                    @if (string.IsNullOrWhiteSpace(usePic))
                                  {
-                                    <div style="width:100%;margin-top:0;">
+                                    <div style="margin-top:0;">
                                         <div  class="logo-background-s mb-2" >
                                             <a target="_blank" href="@result.Content.Url">
                                                 <i style="color:#88888840;" class="logo-image-s fas fa-chalkboard-teacher fa-6x"></i>
                                             </a>
-                                        </div>
+                                        
                                     </div>
+                             
+                </div>
                                  }
                             </div> 
                             
                             
-                            <div class="col-lg-9 p-3">
-                                <div class="post-preview">
+                            <div class="col-lg-3 p-3">
+                                    <div class="post-preview">
                                     <a target="_blank" href="@linkTarget">
                                         <h2 class="post-title">
                                             @(result.Content.Value("title"))   
                                         </h2>
                                     </a>
+                                 
                                 </div>
                               </div>
                             </div>
